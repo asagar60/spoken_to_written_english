@@ -1,0 +1,8 @@
+README.md
+setup.py
+spoken_to_written_english/__init__.py
+spoken_to_written_english/convert_spoken_to_written_digit.py
+spoken_to_written_english.egg-info/PKG-INFO
+spoken_to_written_english.egg-info/SOURCES.txt
+spoken_to_written_english.egg-info/dependency_links.txt
+spoken_to_written_english.egg-info/top_level.txt
