@@ -1,3 +1,4 @@
+LICENSE.txt
 README.md
 setup.py
 spoken_to_written_english/__init__.py

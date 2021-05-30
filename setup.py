@@ -3,7 +3,7 @@ from setuptools import setup
 # ref: https://www.youtube.com/watch?v=RiWqigGW9cA
 
 setup(name='spoken_to_written_english',
-      version='0.1',
+      version='0.2',
       description='Package to convert spoken english to writen english',
       author='Arun Sagar',
       author_email='asagar60@gmail.com',

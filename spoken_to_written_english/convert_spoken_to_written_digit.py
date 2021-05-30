@@ -16,14 +16,18 @@ def static_rules():
              'tuples': {'double': 2, 'triple': 3, 'quadruple': 4, 'quintuple': 5, 'sextuple': 6, 'septuple': 7,
                         'octuple': 8}}
 
-    # To handle C M/ P M values
-
-    other_rules = {"C M": 'CM',
-                   "P M": 'PM'}
-
+    
+    #REMOVED abbrievations : this will be handled internally
+    """
+    abbreviations = {"C M": 'CM',
+                   "P M": 'PM',
+                   "H T M L": "HTML",
+                   }
+    """
+    
     labels = {'currencies': {'dollars': '$'}}
 
-    return rules, other_rules, labels
+    return rules,  labels
 
 
 def convert(text):
@@ -33,43 +37,53 @@ def convert(text):
     """
 
     # get rules
-    rules, other_rules, labels = static_rules()
+    rules, labels = static_rules()
     text = text.split()
     updated_text = []
 
-    i, j = 0, 0
+    i = 0
     while i < len(text)-1:
-        first, last = text[i].lower(), text[i + 1]
-        j = i + 2 if i + 2 <= len(text) else -1
-        concat_text = " ".join(text[i:j])
-
-        if concat_text in other_rules.keys():
-            upd_text = other_rules[concat_text]
-            updated_text.append(upd_text)
-            i = i + 2
-
-        elif first in rules['tuples'].keys():
-            # check if its in tuples
-            num_first = rules['tuples'][first]
-            new_text = ""
-            for _ in range(num_first):
-                new_text = new_text + last
-            updated_text.append(new_text)
-            i = i + 2
-
-        elif first in rules['numbers'].keys():
-            num_first = rules['numbers'][first]
-
-            # check if last word is related to currency
-            last = last.lower()
-            if last in labels['currencies'].keys():
-                last = labels['currencies'][last]
-                updated_text.append(last + str(num_first))
-
-                i = i + 2
-
+        
+        #for abbreviations
+        sub_word = []
+        if len(text[i]) < 2 and text[i].isupper():
+            sub_word = [text[i]]
+            k = i+1
+            while k < len(text) and len(text[k]) < 2 and text[k].isupper():
+                sub_word.append(text[k])
+                k = k+1
+            sub_word = ["".join(sub_word)]
+            i = k 
         else:
-            updated_text.append(first)
-            i = i + 1
+                    
+            first, last = text[i].lower(), text[i + 1]
+    
+            if first in rules['tuples'].keys():
+                # check if its in tuples
+                num_first = rules['tuples'][first]
+                new_text = ""
+                for _ in range(num_first):
+                    new_text = new_text + last
+                updated_text.append(new_text)
+                i = i + 2
+    
+            elif first in rules['numbers'].keys():
+                num_first = rules['numbers'][first]
+    
+                # check if last word is related to currency
+                last = last.lower()
+                if last in labels['currencies'].keys():
+                    last = labels['currencies'][last]
+                    updated_text.append(last + str(num_first))
+    
+                    i = i + 2
+    
+            else:
+                updated_text.append(first)
+                i = i + 1
+        
+            
+        updated_text = updated_text + sub_word
+            
     return " ".join(updated_text)
 
